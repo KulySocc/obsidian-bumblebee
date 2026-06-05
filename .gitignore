@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Local development tooling — not part of the published theme
+link.sh
+.claude/
+.scratch/
+CLAUDE.md
+docs/agents/
