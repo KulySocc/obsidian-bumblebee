@@ -4,20 +4,6 @@ name: Bumblebee theme settings
 id: bumblebee
 settings:
     -
-        # Callout Settings
-
-        id: callout
-        title: Callouts
-        type: heading
-        level: 1
-        collapsed: true
-    -
-        id: callout-on
-        title: Minimal callout style
-        type: class-toggle
-        default: false
-
-    -
         # Headers underline
 
         id: headers-underline
@@ -184,16 +170,16 @@ body {
     --border-width: 1px;
     /* Buttons */
     --button-radius: var(--input-radius);
-    /* Callouts */
-    --callout-border-width: 0px;
-    --callout-border-opacity: 0.25;
-    --callout-padding: var(--size-4-3) var(--size-4-3) var(--size-4-3) var(--size-4-6);
+    /* Callouts — tinted title row over outlined transparent body (see ADR-0005) */
+    --callout-border-width: 1px;
+    --callout-border-opacity: 0.40;
+    --callout-padding: 0;
     --callout-radius: var(--radius-s);
-    --callout-blend-mode: var(--highlight-mix-blend-mode);
+    --callout-blend-mode: normal;
     --callout-title-color: inherit;
-    --callout-title-padding: 0;
+    --callout-title-padding: var(--size-4-2) var(--size-4-3);
     --callout-title-size: inherit;
-    --callout-content-padding: 0;
+    --callout-content-padding: var(--size-4-3);
     --callout-content-background: transparent;
     --callout-bug: var(--color-red-rgb);
     --callout-default: var(--color-blue-rgb);
@@ -922,20 +908,23 @@ button.mod-cta:hover {
     background-color: var(--color-btn-primary-hover-bg);
 }
 
-/* ── Callout — minimal style toggle ─────────────────────────────── */
+/* ── Callouts — tinted title row over outlined transparent body ─── */
+/* See ADR-0005. The title's tint band reads as a status banner; the
+   1px outline holds the shape. The hairline divider below the title is
+   rendered as a border-top on .callout-content, so it vanishes for free
+   when Obsidian omits .callout-content (title-only) or hides it
+   (collapsed) — leaving a clean tinted banner in either state. */
 
-body.callout-on {
-    --callout-radius: 0;
-    --callout-border-width: 0;
-    --callout-padding: 0 1em;
-}
-body.callout-on .callout {
-    border-left: 0.25em solid var(--color-base-30);
+.callout {
     background-color: transparent;
-    color: var(--text-muted);
+    overflow: hidden;
 }
-body.callout-on .callout-content p {
-    margin: 0.1em 0;
+.callout-title {
+    background-color: rgba(var(--callout-color), 0.12);
+    color: rgb(var(--callout-color));
+}
+.callout-content {
+    border-top: 1px solid rgba(var(--callout-color), 0.22);
 }
 
 /* ── Headers — one-color toggle ─────────────────────────────────── */

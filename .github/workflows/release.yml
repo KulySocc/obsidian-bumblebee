@@ -1,0 +1,45 @@
+name: Release
+
+# Bumblebee is a CSS theme — no build step. This workflow publishes a release
+# when a bare-semver tag (e.g. 1.0.1) is pushed: it asserts the tag matches the
+# version in manifest.json, then creates a GitHub Release with manifest.json
+# and theme.css attached.
+#
+# Local flow:
+#   1. Edit manifest.json → bump version
+#   2. Commit any changes (theme.css, manifest, docs)
+#   3. git tag <version> && git push --follow-tags
+#
+# Obsidian's community-themes index requires bare semver tags (no `v` prefix).
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify tag matches manifest version
+        run: |
+          TAG="${GITHUB_REF_NAME}"
+          MANIFEST_VERSION=$(jq -r .version manifest.json)
+          if [ "$TAG" != "$MANIFEST_VERSION" ]; then
+            echo "::error::Tag '$TAG' does not match manifest.json version '$MANIFEST_VERSION'"
+            exit 1
+          fi
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            manifest.json theme.css \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes
