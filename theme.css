@@ -917,14 +917,29 @@ button.mod-cta:hover {
 
 .callout {
     background-color: transparent;
+    /* Obsidian's default .callout border-color is a neutral grey that ignores
+       --callout-color, so the tinted outline must be set explicitly here. */
+    border-color: rgba(var(--callout-color), 0.40);
     overflow: hidden;
 }
 .callout-title {
     background-color: rgba(var(--callout-color), 0.12);
     color: rgb(var(--callout-color));
 }
+/* Let the title text grow so the fold chevron is pushed to the outer edge. */
+.callout-title-inner {
+    flex: 1;
+}
 .callout-content {
     border-top: 1px solid rgba(var(--callout-color), 0.22);
+}
+/* The content padding controls the body's inner spacing — drop the stacked
+   first/last paragraph margins Obsidian would otherwise add on top of it. */
+.callout-content > :first-child {
+    margin-top: 0;
+}
+.callout-content > :last-child {
+    margin-bottom: 0;
 }
 
 /* ── Headers — one-color toggle ─────────────────────────────────── */
