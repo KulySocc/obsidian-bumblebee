@@ -29,6 +29,29 @@ A warm, high-contrast theme for [Obsidian](https://obsidian.md) — near-black b
 
 With the **Style Settings** plugin enabled, open **Settings → Style Settings → Bumblebee** to adjust callouts, header underlines, header colors, and Kanban accents.
 
+## Development
+
+Bumblebee is a single-file CSS theme — `theme.css` is the artefact, no build step.
+
+**Local iteration.** Symlink the repo into a vault's themes folder, then enable **Bumblebee** under Settings → Appearance → Themes. Reload Obsidian (or use the *Hot Reload* community plugin) when you save:
+
+```sh
+TARGET="/path/to/vault/.obsidian/themes/Bumblebee"
+rm -rf "$TARGET" && ln -s "$(pwd)" "$TARGET"
+```
+
+The `rm -rf` is needed if Bumblebee was previously installed from the community themes browser — `ln -sfn` alone leaves the existing real directory in place and silently creates a nested symlink inside it.
+
+**Releasing.** Bump the `version` field in `manifest.json`, commit, then push a bare-semver tag:
+
+```sh
+git tag 1.0.2 && git push origin main 1.0.2
+```
+
+The workflow at [`.github/workflows/release.yml`](.github/workflows/release.yml) asserts the tag matches `manifest.json`, then publishes a GitHub Release with `manifest.json` and `theme.css` attached. Tags must be bare semver — no `v` prefix — as required by Obsidian's community-themes index.
+
+Design decisions live in [`CONTEXT.md`](CONTEXT.md) and [`docs/adr/`](docs/adr/).
+
 ## Credits
 
 Bumblebee is a recolor of **[GitHub Theme](https://github.com/krios2146/obsidian-theme-github)** by [@krios2146](https://github.com/krios2146), used under the MIT License. The structural CSS and Style Settings scaffolding are derived from that theme; the Bumblebee palette and the design decisions behind it are documented in [`CONTEXT.md`](CONTEXT.md) and [`docs/adr/`](docs/adr/).
