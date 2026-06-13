@@ -232,8 +232,8 @@ body {
     /* Collapse icons */
     --collapse-icon-color: var(--text-faint);
     --collapse-icon-color-collapsed: var(--text-accent);
-    /* Cursor */
-    --cursor: default;
+    /* Cursor — pointer on interactive chrome for IDE-feel; see ADR 0006 */
+    --cursor: pointer;
     --cursor-link: pointer;
     /* Dialogs */
     --dialog-width: 560px;
@@ -890,6 +890,15 @@ body {
 }
 .markdown-rendered tbody tr:nth-child(2n) {
     background-color: var(--background-secondary);
+}
+
+/* ── Cursor ──────────────────────────────────────────────────────── */
+
+/* Interactive elements that don't read var(--cursor); see ADR 0006. */
+.workspace-tab-header,
+.workspace-tab-header-new-tab,
+.task-list-item-checkbox {
+    cursor: pointer;
 }
 
 /* ── Buttons ─────────────────────────────────────────────────────── */
